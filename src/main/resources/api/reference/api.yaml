@@ -1,0 +1,142 @@
+openapi: 3.0.0
+x-stoplight:
+  id: szq521xew3x15
+info:
+  title: person
+  version: '1.0'
+  description: Person API
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  '/person/{personId}':
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: personId
+        in: path
+        required: true
+        description: Person ID
+    get:
+      summary: Get Person Info by Person ID
+      tags:
+        - PERSON
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/person'
+        '404':
+          description: Person Not Found
+      operationId: get-person-personId
+      description: Retrieve the information of the person with the matching person ID.
+      x-extension-1: null
+    delete:
+      summary: Delete person by Person ID
+      operationId: delete-person-personId
+      responses:
+        '200':
+          description: OK
+      description: Delete person by person ID
+      tags:
+        - PERSON
+  /person:
+    post:
+      summary: POST person endpoint
+      operationId: post-person
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/person'
+      description: Create a person
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  description: First name
+                lastName:
+                  type: string
+                  description: Last name
+              required:
+                - firstName
+                - lastName
+      tags:
+        - PERSON
+    put:
+      summary: Update Person endpoint
+      operationId: put-person
+      responses:
+        '200':
+          description: OK
+      description: Update person
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/person'
+      tags:
+        - PERSON
+  /persons:
+    get:
+      summary: Search persons
+      tags:
+        - PERSON
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/person'
+      operationId: get-persons
+      description: Search persons
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: firstName
+          description: First name
+        - schema:
+            type: string
+          in: query
+          name: lastName
+          description: Last name
+components:
+  schemas:
+    person:
+      title: Person
+      x-stoplight:
+        id: 2lqt3uvfilu12
+      type: object
+      x-tags:
+        - PERSON
+      description: Person model
+      properties:
+        id:
+          type: string
+          description: |
+            Person id
+          format: uuid
+        firstName:
+          type: string
+          description: First name
+        lastName:
+          type: string
+          description: Last name
+      required:
+        - id
+        - firstName
+        - lastName
+tags:
+  - name: PERSON
